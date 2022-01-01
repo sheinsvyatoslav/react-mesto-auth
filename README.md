@@ -1,7 +1,12 @@
-# Здесь будет ваш проект на Реакте с авторизацией и регистрацией
+# Project Mesto-React
 
-Используйте ваши предыдущие наработки по проекту Mesto. Это может быть работа 11-го спринта или его улучшенная версия после 2-х последних спринтов. 
+Project Mesto developed using React.js
 
-Все запросы на авторизацию, регистрацию и проверку токена должны работать через сервис `https://auth.nomoreparties.co`. Остальные запросы, не относящиеся к этой проектной работе могут быть к бэкенду из предыдущих спринтов.
+## Project Description
 
-Успехов!
+Web project was created to let people share their pictures and places where they were.
+You can add your own card, delete it, and like cards of other users.
+To take a closer look at card just click on it!
+
+[Project URL](https://sheinsvyatoslav.github.io/mesto-react/).
+
