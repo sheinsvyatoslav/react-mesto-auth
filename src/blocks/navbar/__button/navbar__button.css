@@ -6,6 +6,9 @@
   line-height: 122%;
   color: #A9A9A9;
   margin: 0 0 0 24px;
+  transition: opacity 0.3s ease-in-out;
+  max-height: 18px;
+  align-self: center;
 }
 
 .navbar__button:hover {
