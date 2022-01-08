@@ -1,0 +1,20 @@
+.navbar__button {
+  background: transparent;
+  padding: 0;
+  border: 0;
+  font-size: 18px;
+  line-height: 122%;
+  color: #A9A9A9;
+  margin: 0 0 0 24px;
+}
+
+.navbar__button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .navbar__button {
+    margin: auto;
+  }
+}

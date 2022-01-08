@@ -1,7 +1,5 @@
-.form {
-  padding: 0;
-  margin: auto;
+.register {
   display: flex;
   flex-direction: column;
+  margin: 15px auto 0;
 }
-

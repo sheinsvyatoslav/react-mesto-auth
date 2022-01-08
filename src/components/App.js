@@ -10,16 +10,28 @@ import DeleteCardPopup from './DeleteCardPopup'
 import {CurrentUserContext} from '../contexts/CurrentUserContext'
 import {CardsContext} from '../contexts/CardsContext'
 import api from "../utils/api"
+import { Route, Switch, useHistory } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import Login from './Login';
+import Register from './Register';
+import InfoTooltip from './InfoTooltip';
+import * as auth from '../auth.js';
 
 export default function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false)
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false)
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false)
   const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''})
   const [currentUser, setCurrentUser] = React.useState({})
   const [cards, setCards] = React.useState([])
   const [deletedCard, setdeletedCard] = React.useState({})
+  const [loggedIn, setLoggedIn] = React.useState(JSON.parse(localStorage.getItem('loggedIn')) || false)
+  const [userData, setUserData] = React.useState({})
+  const [registered, setRegistered] = React.useState(false)
+  const [navBarOpen, setNavBarOpen] = React.useState(false);
+  const history = useHistory();
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -65,6 +77,7 @@ export default function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsDeleteCardPopupOpen(false);
+    setIsInfoToolTipOpen(false);
     setSelectedCard({name: '', link: ''});
   }
 
@@ -159,34 +172,83 @@ export default function App() {
     })
   }
 
+  function handleLogin() {
+    setLoggedIn(true)
+    localStorage.setItem('loggedIn', 'true')
+    handleTokenCheck()
+  }
+
+  function handleTokenCheck() {
+    if (localStorage.getItem('jwt')){
+      const token = localStorage.getItem('jwt');
+      auth.checkToken(token)
+      .then(res => {
+        if(res) {
+          setLoggedIn(true)
+          setUserData(res.data)
+          history.push('/');
+        }
+      })
+    }
+  }
+
+  React.useEffect(() => {
+    handleTokenCheck();
+  }, [])
+
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <CardsContext.Provider value={cards}>
-        <Header />
-        <Main 
-          onEditAvatar={handleEditAvatarClick} 
-          onEditProfile={handleEditProfileClick} 
-          onAddPlace={handleAddPlaceClick} 
-          onCardClick={handleCardClick} 
-          onCardLike={handleCardLike} 
-          onCardDelete={handleDeleteCardClick} 
-          cards={cards}
-        />
-        <Footer />
-        <AddPlacePopup 
-          isOpen={isAddPlacePopupOpen} 
-          onClose={closeAllPopups} 
-          onAddCard={handleAddPlaceSubmit}
-        />
-        <EditProfilePopup 
-          isOpen={isEditProfilePopupOpen} 
-          onClose={closeAllPopups} 
-          onUpdateUser={handleUpdateUser}
-        />
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
-        <DeleteCardPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onDeleteCard={handleCardDelete}/>
-        <ImagePopup onClose={closeAllPopups} card={selectedCard}/>
-      </CardsContext.Provider>
-    </CurrentUserContext.Provider>
+    <Switch>
+      <CurrentUserContext.Provider value={currentUser}>
+        <CardsContext.Provider value={cards}>
+          <ProtectedRoute 
+            exact path="/" 
+            loggedIn={loggedIn}
+            setLoggedIn={setLoggedIn} 
+            component={Header} 
+            link="/signin" 
+            linkName="Выйти"
+            userData={userData}
+            setUserData={setUserData} 
+            navBarOpen={navBarOpen}
+            setNavBarOpen={setNavBarOpen}
+          />
+          <ProtectedRoute 
+            exact path="/" 
+            loggedIn={loggedIn} 
+            component={Main} 
+            onEditAvatar={handleEditAvatarClick} 
+            onEditProfile={handleEditProfileClick} 
+            onAddPlace={handleAddPlaceClick} 
+            onCardClick={handleCardClick} 
+            onCardLike={handleCardLike} 
+            onCardDelete={handleDeleteCardClick} 
+            cards={cards}
+          />
+          <Route path="/signup">
+            <Header link="/signin" linkName="Войти"/>
+            <Register setIsInfoToolTipOpen={setIsInfoToolTipOpen} registered={registered} setRegistered={setRegistered}/>
+          </Route>
+          <Route path="/signin">
+            <Header link="/signup" linkName="Регистрация"/>
+            <Login handleLogin={handleLogin} />
+          </Route>
+          <Footer />
+          <AddPlacePopup 
+            isOpen={isAddPlacePopupOpen} 
+            onClose={closeAllPopups} 
+            onAddCard={handleAddPlaceSubmit}
+          />
+          <EditProfilePopup 
+            isOpen={isEditProfilePopupOpen} 
+            onClose={closeAllPopups} 
+            onUpdateUser={handleUpdateUser}
+          />
+          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
+          <DeleteCardPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onDeleteCard={handleCardDelete}/>
+          <ImagePopup onClose={closeAllPopups} card={selectedCard}/>
+          <InfoTooltip isOpen={isInfoToolTipOpen} onClose={closeAllPopups} loggedIn={loggedIn} registered={registered}/>
+        </CardsContext.Provider>
+      </CurrentUserContext.Provider>
+    </Switch>
   );
 }
