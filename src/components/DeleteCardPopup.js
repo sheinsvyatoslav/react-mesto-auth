@@ -8,6 +8,13 @@ export default function DeleteCardPopup(props) {
   } 
 
   return (
-    <PopupWithForm name="delete" title="Вы уверены?" submitButtonName="Да" openedPopupClassName={props.isOpen ? "popup_opened" : ''} onClose={props.onClose} onSubmit={handleSubmit} />
+    <PopupWithForm 
+      name="delete" 
+      title="Вы уверены?" 
+      submitButtonName="Да" 
+      openedPopupClassName={props.isOpen ? "popup_opened" : ''} 
+      onClose={props.onClose} 
+      onSubmit={handleSubmit} 
+    />
   )
 }

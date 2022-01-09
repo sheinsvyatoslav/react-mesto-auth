@@ -77,20 +77,9 @@ class Api {
     .then(this._checkResponseStatus);
   }
 
-  putLike(cardId) {
+  toggleLike(cardId, isLiked) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: 'PUT',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json',
-      }, 
-    })
-    .then(this._checkResponseStatus);
-  }
-
-  removeLike(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: 'DELETE',
+      method: `${isLiked ? 'DELETE' : 'PUT'}`,
       headers: {
         authorization: this._token,
         'Content-Type': 'application/json',

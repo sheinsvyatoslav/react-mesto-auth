@@ -9,7 +9,6 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  display: none
 }
 
 .header__wrap-button:hover {
@@ -19,10 +18,4 @@
 
 .header__wrap-button:focus {
   outline: none;
-}
-
-@media screen and (max-width: 767px) {
-  .header__wrap-button {
-    display: block;
-  }
 }

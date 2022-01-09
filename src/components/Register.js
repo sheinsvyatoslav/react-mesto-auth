@@ -1,11 +1,9 @@
-import React from "react";
-import { Link, useHistory } from 'react-router-dom';
-import * as auth from '../auth.js';
+import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 
 export default function Register(props) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const history = useHistory();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function handleChangeEmail(e) {
     setEmail(e.target.value);
@@ -17,22 +15,7 @@ export default function Register(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    auth.register(password, email)
-    .then((res) => {
-      if(!res.error){
-        props.setRegistered(true)
-        history.push('/signin');
-      }
-      else {
-        props.setRegistered(false)
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-    .finally(() => {
-      props.setIsInfoToolTipOpen(true);
-    })
+    props.handleRegister(password, email)
   }
 
   return (

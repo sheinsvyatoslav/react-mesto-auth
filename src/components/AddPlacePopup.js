@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm'
 
 export default function AddPlacePopup(props) {
-  const [place, setPlace] = React.useState('')
-  const [image, setImage] = React.useState('')
+  const [place, setPlace] = useState('')
+  const [image, setImage] = useState('')
 
   function handleChangePlace(e) {
     setPlace(e.target.value);
@@ -18,7 +18,7 @@ export default function AddPlacePopup(props) {
     props.onAddCard({place, image});
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if(props.isOpen) {
       setPlace('');
       setImage('');
