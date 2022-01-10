@@ -26,11 +26,10 @@ export default function App() {
   const [selectedCard, setSelectedCard] = useState({name: '', link: ''})
   const [currentUser, setCurrentUser] = useState({})
   const [cards, setCards] = useState([])
-  const [deletedCard, setdeletedCard] = useState({})
+  const [deletedCard, setDeletedCard] = useState({})
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('jwt') ? true : false)
   const [userEmail, setUserEmail] = useState('')
   const [tooltipStatus, setTooltipStatus] = useState(false);
-  const [navBarOpen, setNavBarOpen] = useState(false);
   const history = useHistory();
 
   //добавление первоначальных карточек и инфо о пользователе
@@ -67,7 +66,7 @@ export default function App() {
 
   function handleDeleteCardClick(card) {
     setIsDeleteCardPopupOpen(true);
-    setdeletedCard(card)
+    setDeletedCard(card)
   }
 
   //закрытие попапов
@@ -156,19 +155,19 @@ export default function App() {
 
   function handleRegister(password, email) {
     auth.register(password, email)
-    .then((res) => {
-      if(!res.error){
-        setTooltipStatus(true)
-      }
-      else {
-        setTooltipStatus(false)
-      }
+    .then(() => {
+      setTooltipStatus(true)
     })
-    .catch(err => console.log(err))
+    .then(() => {
+      handleLogin(password, email)
+    })
+    .catch(err => {
+      setTooltipStatus(false)
+      console.log(err)
+    })
     .finally(() => {
       setIsInfoToolTipOpen(true);
     })
-    setTimeout(handleLogin, 1000, password, email)
   }
 
   function handleLogin(password, email) {
@@ -207,13 +206,12 @@ export default function App() {
     setLoggedIn(false);
     setUserEmail('')
     history.push('/signin');
-    setNavBarOpen(false)
   }
 
   return ( 
     <CurrentUserContext.Provider value={currentUser}>
       <CardsContext.Provider value={cards}>
-        <Header userEmail={userEmail} signOut={signOut} navBarOpen={navBarOpen} setNavBarOpen={setNavBarOpen}/>
+        <Header userEmail={userEmail} signOut={signOut} />
         <Switch>
           <ProtectedRoute 
             exact path="/" 
@@ -228,7 +226,7 @@ export default function App() {
             cards={cards}
           />
           <Route path="/signup">
-            <Register setIsInfoToolTipOpen={setIsInfoToolTipOpen} setTooltipStatus={setTooltipStatus} handleRegister={handleRegister}/>
+            <Register handleRegister={handleRegister}/>
           </Route>
           <Route path="/signin">
             <Login handleLogin={handleLogin} />
@@ -248,7 +246,7 @@ export default function App() {
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
         <DeleteCardPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onDeleteCard={handleCardDelete}/>
         <ImagePopup onClose={closeAllPopups} card={selectedCard}/>
-        <InfoTooltip isOpen={isInfoToolTipOpen} onClose={closeAllPopups} loggedIn={loggedIn} tooltipStatus={tooltipStatus}/>
+        <InfoTooltip isOpen={isInfoToolTipOpen} onClose={closeAllPopups} tooltipStatus={tooltipStatus}/>
       </CardsContext.Provider>
     </CurrentUserContext.Provider>
   );
