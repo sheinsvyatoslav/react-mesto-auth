@@ -159,9 +159,6 @@ export default function App() {
     .then((res) => {
       if(!res.error){
         setTooltipStatus(true)
-        setLoggedIn(true)
-        setUserEmail(email)
-        history.push('/signin');
       }
       else {
         setTooltipStatus(false)
@@ -171,7 +168,7 @@ export default function App() {
     .finally(() => {
       setIsInfoToolTipOpen(true);
     })
-    setTimeout(handleLogin, 500, password, email)
+    setTimeout(handleLogin, 1000, password, email)
   }
 
   function handleLogin(password, email) {
