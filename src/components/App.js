@@ -157,8 +157,6 @@ export default function App() {
     auth.register(password, email)
     .then(() => {
       setTooltipStatus(true)
-    })
-    .then(() => {
       handleLogin(password, email)
     })
     .catch(err => {
