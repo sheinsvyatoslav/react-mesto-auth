@@ -51,7 +51,7 @@ export default function App() {
     setIsEditProfilePopupOpen(true)
   }
 
-  
+
   function handleAddPlaceClick () {
     setIsAddPlacePopupOpen(true);
   }
