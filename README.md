@@ -1,12 +1,19 @@
-# Project Mesto-React
+# Проект Mesto React
 
-Project Mesto developed using React.js
+Проект Mesto, написанный на React.js
 
 ## Project Description
 
-Web project was created to let people share their pictures and places where they were.
-You can add your own card, delete it, and like cards of other users.
-To take a closer look at card just click on it!
+Переработан код, добавлена регистрация и авторизация пользователя. Усовершенствована мобильная версия.
+Предусмотрен выход из системы, повторный вход при закрытии браузера не требуется (используется localStorage).
+Проект создан при помощи Create React App.
+
+### **Проект разрабатывается с использованием:**
+* HTML 
+* CSS (медиа-запросы, расчеты в относительных величинах)
+* React.js (функциональные компоненты + hooks)
+* React Router
+* JS
 
 [Project URL](https://sheinsvyatoslav.github.io/react-mesto-auth/).
 
