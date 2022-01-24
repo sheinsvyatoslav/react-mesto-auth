@@ -15,5 +15,9 @@
 * React Router
 * JS
 
+### **Планы по доработке проекта:**
+1. Добавить валидацию полей ввода (как в версии на JS Native)
+2. Добавить UX при загрузке форм (Сохранение... при загрузке)
+
 [Project URL](https://sheinsvyatoslav.github.io/react-mesto-auth/).
 
